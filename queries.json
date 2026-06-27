@@ -1,0 +1,51 @@
+[
+  {"text": "Where is my order?",                              "category": "order_tracking"},
+  {"text": "I want to track my package",                     "category": "order_tracking"},
+  {"text": "Can you tell me the status of my delivery?",     "category": "order_tracking"},
+  {"text": "How do I check my shipment status?",             "category": "order_tracking"},
+  {"text": "What's the tracking number for my order?",       "category": "order_tracking"},
+  {"text": "My package hasn't arrived yet",                  "category": "order_tracking"},
+  {"text": "When will my order be delivered?",               "category": "order_tracking"},
+  {"text": "Has my order shipped yet?",                      "category": "order_tracking"},
+  {"text": "I need to know where my parcel is",              "category": "order_tracking"},
+  {"text": "Can I get an update on my order status?",        "category": "order_tracking"},
+
+  {"text": "How do I return an item?",                       "category": "return_policy"},
+  {"text": "I'd like to send back my purchase",              "category": "return_policy"},
+  {"text": "What is your returns process?",                  "category": "return_policy"},
+  {"text": "Can I get a refund for this product?",           "category": "return_policy"},
+  {"text": "How long does a refund take?",                   "category": "return_policy"},
+  {"text": "I want to exchange this item",                   "category": "return_policy"},
+  {"text": "What's your refund policy?",                     "category": "return_policy"},
+  {"text": "How many days do I have to return something?",   "category": "return_policy"},
+
+  {"text": "I forgot my password",                           "category": "account"},
+  {"text": "How do I reset my login credentials?",           "category": "account"},
+  {"text": "I can't log in to my account",                   "category": "account"},
+  {"text": "How do I change my email address?",              "category": "account"},
+  {"text": "I need to update my billing information",        "category": "account"},
+  {"text": "How do I delete my account?",                    "category": "account"},
+
+  {"text": "I want to cancel my subscription",              "category": "cancellation"},
+  {"text": "How do I stop my recurring billing?",           "category": "cancellation"},
+  {"text": "Please cancel my order",                        "category": "cancellation"},
+  {"text": "I need to cancel before the renewal date",      "category": "cancellation"},
+
+  {"text": "Do you offer free shipping?",                   "category": "shipping"},
+  {"text": "How much does shipping cost?",                  "category": "shipping"},
+  {"text": "Do you ship internationally?",                  "category": "shipping"},
+  {"text": "What are your delivery options?",               "category": "shipping"},
+
+  {"text": "What payment methods do you accept?",           "category": "payment"},
+  {"text": "Can I pay with PayPal?",                        "category": "payment"},
+  {"text": "Do you accept gift cards?",                     "category": "payment"},
+  {"text": "Is it safe to use my credit card on your site?","category": "payment"},
+
+  {"text": "My item arrived damaged",                       "category": "damaged_goods"},
+  {"text": "I received the wrong product",                  "category": "damaged_goods"},
+  {"text": "The item I got is defective",                   "category": "damaged_goods"},
+
+  {"text": "How do I apply a discount code?",               "category": "promotions"},
+  {"text": "My promo code isn't working",                   "category": "promotions"},
+  {"text": "Do you have any current sales?",                "category": "promotions"}
+]
