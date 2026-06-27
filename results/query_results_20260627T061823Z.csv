@@ -1,0 +1,43 @@
+query_id,query_text,category,run,cache_hit,latency_ms,input_tokens,output_tokens,total_tokens,cost_usd
+1,Where is my order?,order_tracking,no_cache,False,2504.979999997886,29,90,119,5.835e-05
+2,I want to track my package,order_tracking,no_cache,False,2372.6384000037797,30,138,168,8.73e-05
+3,Can you tell me the status of my delivery?,order_tracking,no_cache,False,3436.723199993139,34,161,195,0.0001017
+4,How do I check my shipment status?,order_tracking,no_cache,False,3419.4513999973424,33,193,226,0.00012075
+5,What's the tracking number for my order?,order_tracking,no_cache,False,1686.1175000085495,33,107,140,6.915e-05
+6,My package hasn't arrived yet,order_tracking,no_cache,False,2185.4848000220954,30,116,146,7.41e-05
+7,When will my order be delivered?,order_tracking,no_cache,False,2139.830300002359,31,107,138,6.885e-05
+8,How do I return an item?,return_policy,no_cache,False,3855.5370999965817,31,216,247,0.00013424999999999998
+9,I'd like to send back my purchase,return_policy,no_cache,False,2309.822899987921,32,124,156,7.92e-05
+10,What is your returns process?,return_policy,no_cache,False,2332.915700011654,30,144,174,9.09e-05
+11,Can I get a refund for this product?,return_policy,no_cache,False,2047.5276999932248,34,122,156,7.829999999999999e-05
+12,How long does a refund take?,return_policy,no_cache,False,2043.0235000094399,32,108,140,6.959999999999998e-05
+13,I forgot my password,account,no_cache,False,3718.866800016258,28,179,207,0.00011159999999999999
+14,How do I reset my login credentials?,account,no_cache,False,2632.9867000167724,32,171,203,0.0001074
+15,I can't log in to my account,account,no_cache,False,2456.7682999768294,32,158,190,9.959999999999998e-05
+16,How do I change my email address?,account,no_cache,False,3207.7897999843117,32,182,214,0.00011399999999999999
+17,I want to cancel my subscription,cancellation,no_cache,False,3239.040299988119,30,183,213,0.0001143
+18,How do I stop my recurring billing?,cancellation,no_cache,False,3866.0195999837015,32,231,263,0.00014340000000000002
+19,Please cancel my order,cancellation,no_cache,False,1869.7418000083417,28,96,124,6.18e-05
+20,Do you offer free shipping?,shipping,no_cache,False,1993.710100010503,30,97,127,6.269999999999999e-05
+21,What payment methods do you accept?,payment,no_cache,False,3535.296100017149,31,143,174,9.045e-05
+1,Where is my order?,order_tracking,with_cache,False,3071.783100022003,29,80,109,5.235e-05
+2,I want to track my package,order_tracking,with_cache,False,2744.2612999875564,30,200,230,0.0001245
+3,Can you tell me the status of my delivery?,order_tracking,with_cache,False,3176.3717000139877,34,162,196,0.0001023
+4,How do I check my shipment status?,order_tracking,with_cache,False,3075.909800012596,33,179,212,0.00011235
+5,What's the tracking number for my order?,order_tracking,with_cache,False,1836.7577999888454,33,98,131,6.374999999999999e-05
+6,My package hasn't arrived yet,order_tracking,with_cache,False,5018.241799989482,30,104,134,6.69e-05
+7,When will my order be delivered?,order_tracking,with_cache,False,3273.5602000029758,31,125,156,7.965e-05
+8,How do I return an item?,return_policy,with_cache,False,3585.1128000067547,31,205,236,0.00012764999999999999
+9,I'd like to send back my purchase,return_policy,with_cache,False,2918.957199988654,32,118,150,7.56e-05
+10,What is your returns process?,return_policy,with_cache,False,3701.736400020309,30,188,218,0.00011729999999999999
+11,Can I get a refund for this product?,return_policy,with_cache,False,4459.190900000976,34,142,176,9.03e-05
+12,How long does a refund take?,return_policy,with_cache,False,2649.6204000141006,32,177,209,0.00011099999999999999
+13,I forgot my password,account,with_cache,False,2782.490700017661,28,147,175,9.239999999999998e-05
+14,How do I reset my login credentials?,account,with_cache,False,2603.1793000001926,32,188,220,0.00011759999999999999
+15,I can't log in to my account,account,with_cache,False,4025.4908000060823,32,193,225,0.00012059999999999999
+16,How do I change my email address?,account,with_cache,False,2203.102300001774,32,97,129,6.3e-05
+17,I want to cancel my subscription,cancellation,with_cache,False,2450.4704999853857,30,128,158,8.13e-05
+18,How do I stop my recurring billing?,cancellation,with_cache,False,4149.121700000251,32,194,226,0.00012119999999999999
+19,Please cancel my order,cancellation,with_cache,False,2086.6821999952663,28,96,124,6.18e-05
+20,Do you offer free shipping?,shipping,with_cache,False,2007.0902000006754,30,107,137,6.87e-05
+21,What payment methods do you accept?,payment,with_cache,False,2741.8169000011403,31,109,140,7.005000000000001e-05
