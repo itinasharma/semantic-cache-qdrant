@@ -1,0 +1,43 @@
+query_id,query_text,category,run,cache_hit,latency_ms,input_tokens,output_tokens,total_tokens,cost_usd
+1,Where is my order?,order_tracking,no_cache,False,1817.0908000029158,29,83,112,5.4149999999999995e-05
+2,I want to track my package,order_tracking,no_cache,False,2202.539899997646,30,112,142,7.17e-05
+3,Can you tell me the status of my delivery?,order_tracking,no_cache,False,5990.544999978738,34,67,101,4.53e-05
+4,How do I check my shipment status?,order_tracking,no_cache,False,3633.731300011277,33,209,242,0.00013035000000000002
+5,What's the tracking number for my order?,order_tracking,no_cache,False,3076.705999992555,33,96,129,6.255e-05
+6,My package hasn't arrived yet,order_tracking,no_cache,False,2013.4104000171646,30,104,134,6.69e-05
+7,When will my order be delivered?,order_tracking,no_cache,False,2277.8455000079703,31,93,124,6.044999999999999e-05
+8,How do I return an item?,return_policy,no_cache,False,2866.812599997502,31,175,206,0.00010965
+9,I'd like to send back my purchase,return_policy,no_cache,False,2868.0219000088982,32,139,171,8.819999999999999e-05
+10,What is your returns process?,return_policy,no_cache,False,3113.4367999911774,30,212,242,0.0001317
+11,Can I get a refund for this product?,return_policy,no_cache,False,2212.566300004255,34,130,164,8.309999999999999e-05
+12,How long does a refund take?,return_policy,no_cache,False,2453.365599998506,32,130,162,8.279999999999998e-05
+13,I forgot my password,account,no_cache,False,3069.2457999975886,28,158,186,9.899999999999998e-05
+14,How do I reset my login credentials?,account,no_cache,False,2965.3089999919757,32,201,233,0.0001254
+15,I can't log in to my account,account,no_cache,False,2771.091800008435,32,233,265,0.0001446
+16,How do I change my email address?,account,no_cache,False,3149.2111000115983,32,163,195,0.0001026
+17,I want to cancel my subscription,cancellation,no_cache,False,2987.9650000075344,30,163,193,0.0001023
+18,How do I stop my recurring billing?,cancellation,no_cache,False,3687.8886000195052,32,219,251,0.0001362
+19,Please cancel my order,cancellation,no_cache,False,2353.8040000130422,28,113,141,7.199999999999999e-05
+20,Do you offer free shipping?,shipping,no_cache,False,2333.2477000076324,30,99,129,6.39e-05
+21,What payment methods do you accept?,payment,no_cache,False,2385.0415000051726,31,115,146,7.365e-05
+1,Where is my order?,order_tracking,with_cache,True,7.314499991480261,0,0,0,0.0
+2,I want to track my package,order_tracking,with_cache,True,5.262999999104068,0,0,0,0.0
+3,Can you tell me the status of my delivery?,order_tracking,with_cache,True,6.962499988730997,0,0,0,0.0
+4,How do I check my shipment status?,order_tracking,with_cache,True,5.402199982199818,0,0,0,0.0
+5,What's the tracking number for my order?,order_tracking,with_cache,True,5.52189999143593,0,0,0,0.0
+6,My package hasn't arrived yet,order_tracking,with_cache,True,6.616600003326312,0,0,0,0.0
+7,When will my order be delivered?,order_tracking,with_cache,True,5.4490999900735915,0,0,0,0.0
+8,How do I return an item?,return_policy,with_cache,True,6.820300011895597,0,0,0,0.0
+9,I'd like to send back my purchase,return_policy,with_cache,True,6.205399986356497,0,0,0,0.0
+10,What is your returns process?,return_policy,with_cache,True,4.738000017823651,0,0,0,0.0
+11,Can I get a refund for this product?,return_policy,with_cache,True,7.318000018130988,0,0,0,0.0
+12,How long does a refund take?,return_policy,with_cache,True,5.380800022976473,0,0,0,0.0
+13,I forgot my password,account,with_cache,True,4.5316000177990645,0,0,0,0.0
+14,How do I reset my login credentials?,account,with_cache,True,6.194099987624213,0,0,0,0.0
+15,I can't log in to my account,account,with_cache,True,4.522300005191937,0,0,0,0.0
+16,How do I change my email address?,account,with_cache,True,5.290899978717789,0,0,0,0.0
+17,I want to cancel my subscription,cancellation,with_cache,True,6.195199996000156,0,0,0,0.0
+18,How do I stop my recurring billing?,cancellation,with_cache,True,5.416300002252683,0,0,0,0.0
+19,Please cancel my order,cancellation,with_cache,True,5.374899978050962,0,0,0,0.0
+20,Do you offer free shipping?,shipping,with_cache,True,5.192699987674132,0,0,0,0.0
+21,What payment methods do you accept?,payment,with_cache,True,16.71990001341328,0,0,0,0.0

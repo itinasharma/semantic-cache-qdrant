@@ -1,0 +1,33 @@
+{
+  "total_queries": 21,
+  "cache_hits": 0,
+  "cache_misses": 21,
+  "cache_hit_rate_pct": 0.0,
+  "llm_calls_avoided": 0,
+  "tokens_no_cache": 3650,
+  "tokens_with_cache": 3514,
+  "tokens_saved": 136,
+  "tokens_saved_pct": 3.73,
+  "input_tokens_no_cache": 653,
+  "input_tokens_with_cache": 653,
+  "output_tokens_no_cache": 2997,
+  "output_tokens_with_cache": 2861,
+  "cost_usd_no_cache": 0.00189615,
+  "cost_usd_with_cache": 0.00181455,
+  "cost_saved_usd": 8.16e-05,
+  "cost_reduction_pct": 4.3,
+  "avg_latency_ms_no_cache": 2947.94,
+  "avg_latency_ms_with_cache": 3077.46,
+  "p95_latency_ms_no_cache": 3711.38,
+  "p95_latency_ms_with_cache": 4742.61,
+  "avg_cache_hit_latency_ms": 0,
+  "avg_cache_miss_latency_ms": 3077.46,
+  "benchmark_timestamp": "20260627T063135Z",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5",
+  "threshold": 0.92,
+  "pricing": {
+    "input": 0.15,
+    "output": 0.6
+  }
+}

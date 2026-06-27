@@ -1,0 +1,43 @@
+query_id,query_text,category,run,cache_hit,latency_ms,input_tokens,output_tokens,total_tokens,cost_usd
+1,Track my package,order_tracking,no_cache,False,1747.5188999960665,27,93,120,5.984999999999999e-05
+2,What is the status of my delivery?,order_tracking,no_cache,False,2506.424999999581,32,95,127,6.18e-05
+3,Can I check where my parcel is?,order_tracking,no_cache,False,2952.076899993699,33,157,190,9.915e-05
+4,When will my order arrive?,order_tracking,no_cache,False,1746.324600011576,30,92,122,5.97e-05
+5,I want to send back my purchase,return_policy,no_cache,False,2567.839199997252,31,130,161,8.264999999999999e-05
+6,What is your refund policy?,return_policy,no_cache,False,2517.426999984309,31,149,180,9.405e-05
+7,How do I reset my login credentials?,account,no_cache,False,2790.0426000123844,32,194,226,0.00012119999999999999
+8,I cannot log in to my account,account,no_cache,False,2897.378199995728,31,220,251,0.00013665000000000001
+9,Please cancel my order,cancellation,no_cache,False,1874.2370999825653,28,101,129,6.479999999999999e-05
+10,How do I stop my recurring billing?,cancellation,no_cache,False,4287.947400007397,32,277,309,0.000171
+11,Is there free delivery on orders?,shipping,no_cache,False,3511.9673000008333,31,89,120,5.8049999999999995e-05
+12,Can I pay with PayPal?,payment,no_cache,False,1961.510900000576,32,86,118,5.64e-05
+13,The product I received is broken,damaged_goods,no_cache,False,2002.1293999743648,30,133,163,8.43e-05
+14,Do you have a loyalty rewards program?,promotions,no_cache,False,1979.560500010848,32,98,130,6.359999999999999e-05
+15,How do I update my delivery address?,account,no_cache,False,4188.515999994706,32,225,257,0.0001398
+16,Can I change my order after placing it?,order_tracking,no_cache,False,2898.566599993501,33,178,211,0.00011174999999999999
+17,Do you ship to international addresses?,shipping,no_cache,False,1891.0875000001397,31,103,134,6.645e-05
+18,How long does standard delivery take?,shipping,no_cache,False,2525.4413999791723,31,155,186,9.765e-05
+19,Is my payment information stored securely?,payment,no_cache,False,3930.0151000206824,32,189,221,0.0001182
+20,How do I contact customer support?,general,no_cache,False,2549.55960001098,31,105,136,6.765e-05
+21,Do you offer gift wrapping?,general,no_cache,False,2048.799300013343,31,86,117,5.625e-05
+1,Track my package,order_tracking,with_cache,False,2187.822200008668,27,116,143,7.365e-05
+2,What is the status of my delivery?,order_tracking,with_cache,True,8.702000021003187,0,0,0,0.0
+3,Can I check where my parcel is?,order_tracking,with_cache,True,6.846699980087578,0,0,0,0.0
+4,When will my order arrive?,order_tracking,with_cache,True,4.52919999952428,0,0,0,0.0
+5,I want to send back my purchase,return_policy,with_cache,True,5.757300008554012,0,0,0,0.0
+6,What is your refund policy?,return_policy,with_cache,False,2865.2245000121184,31,136,167,8.625e-05
+7,How do I reset my login credentials?,account,with_cache,True,7.859199977247044,0,0,0,0.0
+8,I cannot log in to my account,account,with_cache,False,3151.018300006399,31,216,247,0.00013424999999999998
+9,Please cancel my order,cancellation,with_cache,True,6.048300012480468,0,0,0,0.0
+10,How do I stop my recurring billing?,cancellation,with_cache,True,15.522499976214021,0,0,0,0.0
+11,Is there free delivery on orders?,shipping,with_cache,True,4.288700001779944,0,0,0,0.0
+12,Can I pay with PayPal?,payment,with_cache,True,6.468900013715029,0,0,0,0.0
+13,The product I received is broken,damaged_goods,with_cache,True,4.045500012580305,0,0,0,0.0
+14,Do you have a loyalty rewards program?,promotions,with_cache,False,1975.0857000180986,32,104,136,6.72e-05
+15,How do I update my delivery address?,account,with_cache,False,4767.883799999254,32,239,271,0.0001482
+16,Can I change my order after placing it?,order_tracking,with_cache,True,7.309499982511625,0,0,0,0.0
+17,Do you ship to international addresses?,shipping,with_cache,True,5.871000001206994,0,0,0,0.0
+18,How long does standard delivery take?,shipping,with_cache,False,2505.0194000068586,31,120,151,7.665e-05
+19,Is my payment information stored securely?,payment,with_cache,False,6408.170499984408,32,196,228,0.0001224
+20,How do I contact customer support?,general,with_cache,False,2486.5006000036374,31,129,160,8.205e-05
+21,Do you offer gift wrapping?,general,with_cache,False,2006.4773999911267,31,80,111,5.265e-05
