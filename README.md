@@ -1,59 +1,111 @@
-# Semantic Caching with Qdrant — Tutorial Project
+# Semantic Caching with Qdrant
 
-Companion code for the article  
-**"How to Use Semantic Caching with Qdrant to Optimize Token Costs in Customer Support"**
+**Stop paying your LLM to answer the same question twice.**
 
 ---
 
-## What this project does
+Imagine running an AI customer support assistant.
 
-In customer-support AI agents, up to **40 % of daily queries are semantic duplicates**  
-(e.g. *"Where is my order?"* vs *"Track my package"*).  
-Sending every variation to an LLM wastes tokens and inflates your API bill.
+One customer asks:
+> *"Where is my order?"*
 
-This project demonstrates how to intercept those duplicates with a **semantic cache** backed by [Qdrant](https://qdrant.tech/), serving stored answers in **< 30 ms** at **zero token cost**, and then benchmarks the exact monetary savings.
+A few seconds later, another asks:
+> *"Track my package."*
 
-### Dual-path execution flow
+Different words. Same intent. Yet most AI systems still send both requests to the LLM — paying twice, waiting twice, for nearly identical answers.
+
+This project demonstrates how **semantic caching with Qdrant** detects those repeated intents, serves cached responses in milliseconds, and benchmarks the resulting savings in token usage, latency, and API costs.
+
+---
+
+## Results at a glance
+
+| Metric | Result |
+|--------|--------|
+| 🎯 Cache hit rate | **57.1%** |
+| 🪙 Token reduction | **55.9%** |
+| 💰 Cost reduction | **55.7%** |
+| ⚡ Avg cache hit latency | **15 ms** |
+| 🐢 Avg LLM latency | **2,575 ms** |
+| 🔬 Model | `claude-haiku-4-5` · threshold `0.75` |
+
+> Over half of all queries were served from cache in under 15 ms at zero token cost.
+
+---
+
+## Why semantic caching?
+
+Traditional caching is exact-match: the query string must be identical to return a hit. Semantic caching uses vector similarity instead — so queries with the same *intent* but different *wording* still hit the cache.
 
 ```
 User query
     │
     ▼
-Embed query (fastembed, local, ~2 ms)
+Embed query          ← local, ~2 ms, zero cost
     │
     ▼
-Search Qdrant (cosine similarity ≥ 0.92?)
+Search Qdrant        ← cosine similarity ≥ threshold?
     │
-    ├─ HIT ──► Return cached Markdown answer
-    │           Cost: 0 tokens | Latency: < 30 ms
+    ├─ HIT  ──►  Return cached answer    0 tokens · < 30 ms
     │
-    └─ MISS ─► Call LLM API
-                │
-                ▼
-               Store (query vector + answer) in Qdrant
-                │
-                ▼
-               Return answer to user
+    └─ MISS ──►  Call LLM API
+                      │
+                      ▼
+                 Store in Qdrant  ←  future queries can now hit this
+                      │
+                      ▼
+                 Return answer
 ```
 
 ---
 
-## Project structure
+## Why Qdrant?
+
+| Database | Why not? |
+|----------|----------|
+| SQLite / Redis | Not designed for nearest-neighbor vector search |
+| Chroma | Great for prototypes, but limited production features |
+| Pinecone | Hosted-only, no named vectors, less control |
+| **Qdrant** | ✅ Named vectors, metadata filtering, ANN search, runs locally or in cloud, production-ready |
+
+Qdrant's **named vectors** feature is what makes the multi-vector benchmark possible — storing `intent`, `keywords`, and `question` vectors in a single point, then searching each independently.
+
+---
+
+## Benchmark goals
+
+This project answers four concrete engineering questions:
+
+- ✅ How many LLM calls are avoided?
+- ✅ How many tokens are saved?
+- ✅ How much money is saved?
+- ✅ Does multi-vector retrieval improve semantic caching?
+
+---
+
+## Architecture
 
 ```
 semantic-cache-project/
-├── semantic_cache.py      # Core SemanticSupportCache class
-├── benchmark.py           # Two-run benchmark + cost analysis + CSV/JSON output
-├── demo.py                # Interactive walkthrough mirroring the tutorial
-├── charts.py              # Matplotlib chart generator for the article
+├── semantic_cache.py          # Core SemanticSupportCache class
+├── benchmark.py               # Two-run cost benchmark (Run A vs Run B)
+├── multi_vector_benchmark.py  # Single vs multi-vector named-vector comparison
+├── demo.py                    # Interactive walkthrough
+├── config.py                  # Centralised config loader (.env → cfg singleton)
+├── charts/
+│   ├── charts.py              # Benchmark charts (5 PNGs)
+│   └── mv_comparison_charts.py # Comparison charts (5 PNGs)
 ├── data/
-│   └── queries.json       # 40-query customer-support workload
-├── results/               # Auto-created; benchmark CSVs and JSONs land here
+│   └── queries.json           # 40-query customer-support workload
+├── results/                   # Auto-created: CSVs, JSONs, PNGs
 ├── tests/
-│   └── test_semantic_cache.py
+│   ├── test_semantic_cache.py # Cache logic, invalidation, thresholds
+│   ├── test_multi_vector.py   # Named vectors, keyword extraction, scoring
+│   └── test_pricing.py        # Verified pricing table, cost calculation
 ├── requirements.txt
 ├── .env.example
 ├── Makefile
+├── CHANGELOG.md
 └── README.md
 ```
 
@@ -61,153 +113,162 @@ semantic-cache-project/
 
 ## Quick start
 
-### 1. Install dependencies
+### 1. Install
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 2. Configure your environment
+### 2. Configure
 
 ```bash
 cp .env.example .env
-# Edit .env — choose a provider and fill in credentials
 ```
 
-### 3a. Run the demo (Ollama — free, local)
-
-Make sure [Ollama](https://ollama.com) is running and the model is pulled:
-
-```bash
-ollama pull llama3.2
-python demo.py --provider ollama
+Minimal `.env` for Anthropic:
+```
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_MODEL=claude-haiku-4-5
+SIMILARITY_THRESHOLD=0.75
 ```
 
-### 3b. Run the demo (OpenRouter — paid)
+Verify config loaded correctly:
+```bash
+python config.py
+```
+
+### 3. Run the demo
 
 ```bash
-export OPENROUTER_API_KEY=sk-or-...
-python demo.py --provider openrouter --model openai/gpt-4o-mini
+python demo.py --provider anthropic --threshold 0.75
+```
+
+### 4. Run the benchmark
+
+```bash
+python benchmark.py --provider anthropic --model claude-haiku-4-5 --threshold 0.75
+```
+
+### 5. Run the multi-vector comparison
+
+```bash
+python multi_vector_benchmark.py --provider anthropic --model claude-haiku-4-5 --threshold 0.75
+```
+
+### 6. Generate charts
+
+```bash
+python charts/charts.py
+python charts/mv_comparison_charts.py
 ```
 
 ---
 
-## Benchmark
+## Benchmark results
 
-The benchmark runs **two identical query passes**:
-
-| Run | Description |
-|-----|-------------|
-| **A — No cache** | Every query calls the LLM. |
-| **B — With cache** | Cache is checked first; LLM only called on a miss. |
-
-```bash
-# Local (Ollama — token counts are real but cost = $0)
-python benchmark.py --provider ollama
-
-# Paid (OpenRouter)
-python benchmark.py \
-  --provider openrouter \
-  --model openai/gpt-4o-mini \
-  --api-key $OPENROUTER_API_KEY
-
-# Custom query file
-python benchmark.py --queries data/queries.json
-
-# Override pricing
-python benchmark.py \
-  --provider openrouter \
-  --input-price 2.50 \
-  --output-price 10.00
-```
-
-### Sample output
+### Single-vector benchmark (claude-haiku-4-5, threshold=0.75)
 
 ```
 ╔════════════════════════════════════════════════════════════╗
 ║           SEMANTIC CACHE BENCHMARK SUMMARY                 ║
 ╠════════════════════════════════════════════════════════════╣
-║  Provider                          ollama                  ║
-║  Model                             llama3.2                ║
-║  Similarity threshold              0.92                    ║
+║  Provider                          anthropic               ║
+║  Model                         claude-haiku-4-5            ║
+║  Similarity threshold              0.75                    ║
 ╟────────────────────────────────────────────────────────────╢
-║  Total queries                     40                      ║
-║  Cache hits                        29                      ║
-║  Cache misses                      11                      ║
-║  Cache hit rate                    72.5%                   ║
-║  LLM calls avoided                 29                      ║
+║  Pricing source                          exact match       ║
+║  Input price                    $1.00 / 1M tokens          ║
+║  Output price                   $5.00 / 1M tokens          ║
 ╟────────────────────────────────────────────────────────────╢
-║  Tokens (no cache)                 12,400                  ║
-║  Tokens (with cache)               3,410                   ║
-║  Tokens saved                      8,990                   ║
-║  Token reduction                   72.5%                   ║
+║  Total queries                     21                      ║
+║  Cache hits                        12                      ║
+║  Cache misses                       9                      ║
+║  Cache hit rate                    57.1%                   ║
+║  LLM calls avoided                 12                      ║
 ╟────────────────────────────────────────────────────────────╢
-║  Cost (no cache)              $0.002480                    ║
-║  Cost (with cache)            $0.000682                    ║
-║  Cost saved                   $0.001798                    ║
-║  Cost reduction                    72.5%                   ║
+║  Tokens (no cache)              3,532                      ║
+║  Tokens (with cache)            1,557                      ║
+║  Tokens saved                   1,975 (55.9%)              ║
 ╟────────────────────────────────────────────────────────────╢
-║  Avg latency no cache              450 ms                  ║
-║  Avg latency w/ cache              148 ms                  ║
-║  Avg hit latency                    18 ms                  ║
-║  Avg miss latency                  490 ms                  ║
+║  Cost (no cache)              $0.015048                    ║
+║  Cost (with cache)            $0.006673                    ║
+║  Cost saved                   $0.008375 (55.7%)            ║
+╟────────────────────────────────────────────────────────────╢
+║  Avg latency no cache           2,416 ms                   ║
+║  Avg latency w/ cache           1,112 ms                   ║
+║  Avg hit latency                   15 ms                   ║
+║  Avg miss latency               2,575 ms                   ║
 ╚════════════════════════════════════════════════════════════╝
 ```
 
-Results are saved to `results/` as:
+### Multi-vector comparison
 
-- `query_results_<timestamp>.csv` / `.json`  — per-query breakdown
-- `benchmark_summary_<timestamp>.csv` / `.json` — aggregate metrics
-
-### Generate charts
-
-```bash
-python charts.py
 ```
+SINGLE vs MULTI-VECTOR CACHE COMPARISON
+─────────────────────────────────────────────────────────────────
+Metric                       Single Vector        Multi Vector
+─────────────────────────────────────────────────────────────────
+Total queries                       21                  21
+Cache hits                          12                  12
+Hit rate                          57.1%               57.1%
+LLM calls avoided                   12                  12
 
-Produces five PNGs in the `results/` directory:
+Tokens saved                     1,975               1,796
+Token reduction                  55.9%               50.9%
 
-| File | Description |
-|------|-------------|
-| `bar_token_comparison.png` | Token usage with vs without cache |
-| `bar_cost_comparison.png` | API cost comparison |
-| `pie_cache_hits.png` | Hit / miss distribution |
-| `bar_latency_comparison.png` | Latency breakdown |
-| `summary_dashboard.png` | 2×2 combined overview (article hero image) |
+Cost saved                    $0.008375           $0.007480
+Cost reduction                   55.7%               49.7%
+
+Avg latency w/ cache            1,112 ms            1,221 ms
+Avg hit latency                    15 ms               42 ms
+
+Vectors stored                       8                   8
+Indexing time                      904 ms              302 ms
+─────────────────────────────────────────────────────────────────
+Engineering note:
+  On this dataset (short, focused queries) single-vector was
+  sufficient. Multi-vector indexing was 67% faster but query
+  latency was 10% slower. Re-run on your own query samples
+  before choosing an approach.
+─────────────────────────────────────────────────────────────────
+```
 
 ---
 
-## Configuration reference
+## How the benchmark works
 
-### CLI flags (`benchmark.py`)
+Two runs are executed against the same 21-query workload:
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--provider` | `ollama` | `ollama` or `openrouter` |
-| `--model` | provider default | Model identifier |
-| `--base-url` | provider default | Override API base URL |
-| `--api-key` | env var | API key for paid providers |
-| `--threshold` | `0.92` | Cosine similarity threshold (0–1) |
-| `--queries` | built-in list | Path to JSON query workload |
-| `--results-dir` | `results/` | Output directory |
-| `--input-price` | model default | Input token price per 1M USD |
-| `--output-price` | model default | Output token price per 1M USD |
-| `--system-prompt` | see code | System prompt for the LLM |
-| `--verbose` | off | Enable DEBUG logging |
+| Phase | Description |
+|-------|-------------|
+| **Seed** | 8 LLM calls populate the warm cache with real answers |
+| **Run A — No cache** | All 21 test queries go to the LLM (cost baseline) |
+| **Run B — With cache** | Same 21 queries hit the cache first; ~12 hit, ~9 miss |
 
-### Environment variables
+The 21 test queries consist of:
+- ~12 **paraphrases** of seed questions (expected cache hits)
+- ~9 **novel questions** the cache has never seen (expected cache misses)
 
-See `.env.example` for a full annotated list. Key variables:
+---
+
+## Multi-vector retrieval
+
+The multi-vector mode uses **Qdrant named vectors** — storing three vectors per cached point instead of one:
+
+| Vector name | What it captures |
+|-------------|-----------------|
+| `intent` | Full query embedding — what the user wants overall |
+| `keywords` | Content-bearing keywords (stop words removed) |
+| `question` | Query reframed as a well-formed question |
+
+At query time all three are searched independently and scores are combined:
 
 ```
-LLM_PROVIDER          ollama | openrouter
-OLLAMA_BASE_URL       http://localhost:11434
-OLLAMA_MODEL          llama3.2
-OPENROUTER_API_KEY    sk-or-...
-OPENROUTER_MODEL      openai/gpt-4o-mini
-QDRANT_URL            (blank = in-memory)
-SIMILARITY_THRESHOLD  0.92
+final_score = 0.6 × best_score + 0.4 × avg_score
 ```
+
+This reduces false positives by requiring both a strong best match **and** consistent agreement across multiple vectors.
 
 ---
 
@@ -215,27 +276,68 @@ SIMILARITY_THRESHOLD  0.92
 
 | Threshold | Behaviour |
 |-----------|-----------|
-| `≤ 0.80` | Too permissive — serving order answers to cancellation requests (false positives) |
-| `0.90–0.95` | **Recommended sweet spot** for customer-support queries |
-| `≥ 0.98` | Too strict — almost no cache hits; benefits nullified |
+| `≤ 0.65` | Too permissive — risk of wrong answers |
+| `0.70–0.80` | ✅ Recommended for customer-support queries |
+| `0.85–0.92` | Strict — fewer hits, very precise |
+| `≥ 0.95` | Too strict — almost no cache hits |
+
+> With `BAAI/bge-small-en-v1.5` (fastembed), `0.75` gives the best balance.
 
 ---
 
-## Cache invalidation strategies
+## Cache invalidation
 
-### Strategy A — Time-to-Live (TTL)
+### TTL-based
 
 ```python
 # Remove entries older than 24 hours
 cache.invalidate_by_ttl(max_age_seconds=86_400)
 ```
 
-### Strategy B — Category purge
+### Category-based
 
 ```python
-# Return policy changed? Invalidate only that category.
+# Policy changed? Purge only that category.
 cache.invalidate_by_category("return_policy")
 ```
+
+---
+
+## Configuration reference
+
+### `.env` variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LLM_PROVIDER` | `ollama` | `anthropic` \| `openrouter` \| `ollama` |
+| `ANTHROPIC_API_KEY` | — | Your `sk-ant-...` key |
+| `ANTHROPIC_MODEL` | `claude-haiku-4-5` | Anthropic model string |
+| `OPENROUTER_API_KEY` | — | Your `sk-or-...` key |
+| `OPENROUTER_MODEL` | `anthropic/claude-haiku-4-5` | OpenRouter model string |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Local Ollama URL |
+| `OLLAMA_MODEL` | `llama3.2` | Ollama model name |
+| `QDRANT_URL` | `:memory:` | Blank = in-memory, or `http://localhost:6333` |
+| `QDRANT_API_KEY` | — | Qdrant Cloud key |
+| `SIMILARITY_THRESHOLD` | `0.75` | Cosine similarity threshold (0–1) |
+| `INPUT_PRICE_PER_MILLION` | — | Override input token price (USD/MTok) |
+| `OUTPUT_PRICE_PER_MILLION` | — | Override output token price (USD/MTok) |
+| `RESULTS_DIR` | `results` | Output directory for CSVs and PNGs |
+
+### CLI flags
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--provider` | `LLM_PROVIDER` env | `anthropic` \| `openrouter` \| `ollama` |
+| `--model` | provider default | Model identifier |
+| `--api-key` | env var | API key (overrides `.env`) |
+| `--threshold` | `SIMILARITY_THRESHOLD` env | Cosine similarity threshold |
+| `--queries` | built-in list | Path to JSON query workload |
+| `--results-dir` | `results/` | Output directory |
+| `--input-price` | model default | Input price per MTok in USD |
+| `--output-price` | model default | Output price per MTok in USD |
+| `--no-single-vector` | off | Skip single-vector run (mv-benchmark only) |
+| `--no-multi-vector` | off | Skip multi-vector run (mv-benchmark only) |
+| `--verbose` / `-v` | off | Enable DEBUG logging |
 
 ---
 
@@ -245,23 +347,37 @@ cache.invalidate_by_category("return_policy")
 pytest tests/ -v
 ```
 
-Tests run **entirely offline** using an in-memory Qdrant instance and mocked LLM responses. No API keys or Ollama server required.
+**112 tests, 4 skipped** (live embedding tests requiring HuggingFace access).
+
+| Test file | Tests | What it covers |
+|-----------|-------|----------------|
+| `test_semantic_cache.py` | 36 | Cache hit/miss, invalidation, thresholds, providers |
+| `test_multi_vector.py` | 29 | Named vectors, keyword extraction, weighted scoring |
+| `test_pricing.py` | 47 | Verified pricing table, `get_pricing()`, cost maths |
 
 ---
 
 ## Built-in pricing table
 
-The following models have known per-token prices pre-loaded
-(all values in USD per 1 M tokens, as of the article's publication date):
+> **Last verified: 2026-06-27.**
+> Re-verify before any production billing use — prices change without notice.
+> Sources: [openai.com/api/pricing](https://openai.com/api/pricing/) · [platform.claude.com/docs/en/about-claude/pricing](https://platform.claude.com/docs/en/about-claude/pricing)
 
-| Model | Input | Output |
-|-------|-------|--------|
-| `openai/gpt-4o` | $2.50 | $10.00 |
-| `openai/gpt-4o-mini` | $0.15 | $0.60 |
-| `anthropic/claude-3-haiku` | $0.25 | $1.25 |
-| `anthropic/claude-3-sonnet` | $3.00 | $15.00 |
-| `meta-llama/llama-3.1-8b-instruct` | $0.10 | $0.10 |
-| Ollama (local) | $0.00 | $0.00 |
+### Anthropic
+
+| Model | Input ($/MTok) | Output ($/MTok) | Notes |
+|-------|---------------|----------------|-------|
+| `claude-opus-4-8` | $5.00 | $25.00 | Flagship |
+| `claude-sonnet-4-6` | $3.00 | $15.00 | Balanced |
+| `claude-haiku-4-5` | $1.00 | $5.00 | ✅ Recommended for benchmarking |
+
+### OpenAI
+
+| Model | Input ($/MTok) | Output ($/MTok) | Notes |
+|-------|---------------|----------------|-------|
+| `gpt-5.5` | $5.00 | $30.00 | Flagship |
+| `gpt-5.4` | $2.50 | $15.00 | Mid-tier |
+| `gpt-5.4-mini` | $0.75 | $4.50 | Budget / default fallback |
 
 Override any price with `--input-price` / `--output-price`.
 
@@ -271,10 +387,11 @@ Override any price with `--input-price` / `--output-price`.
 
 | Component | Library |
 |-----------|---------|
-| Vector database | [qdrant-client](https://github.com/qdrant/qdrant-client) |
+| Vector database | [qdrant-client](https://github.com/qdrant/qdrant-client) ≥ 1.9 |
 | Local embeddings | [fastembed](https://github.com/qdrant/fastembed) (`BAAI/bge-small-en-v1.5`, 384-dim) |
 | HTTP client | [httpx](https://www.python-httpx.org/) |
 | Charts | [matplotlib](https://matplotlib.org/) |
+| Config | [python-dotenv](https://github.com/theskumar/python-dotenv) |
 | Testing | [pytest](https://pytest.org/) |
 
 ---
