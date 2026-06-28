@@ -12,8 +12,6 @@ One customer asks:
 A few seconds later, another asks:
 > *"Track my package."*
 
-Different words. Same intent. Yet most AI systems still send both requests to the LLM — paying twice, waiting twice, for nearly identical answers.
-
 This project demonstrates how **semantic caching with Qdrant** detects those repeated intents, serves cached responses in milliseconds, and benchmarks the resulting savings in token usage, latency, and API costs.
 
 ---
